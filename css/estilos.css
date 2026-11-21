@@ -108,6 +108,12 @@ input {
 
 input::placeholder { color: #a0b4a7; }
 
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+
 button {
   padding-inline: 1.6rem;
   background: var(--acento);
@@ -118,6 +124,13 @@ button {
 
 button:hover:enabled { background: #e2ffb8; }
 button:disabled { opacity: .65; cursor: wait; }
+
+#limpiar {
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+#limpiar:hover { background: var(--borde); }
 :focus-visible { outline: 2px solid var(--acento); outline-offset: 3px; }
 
 h2 { margin: 2rem 0 .15rem; }
@@ -157,4 +170,5 @@ h2 { margin: 2rem 0 .15rem; }
 
 @media (max-width: 36rem) {
   form { grid-template-columns: minmax(0, 1fr); }
+  .acciones > button { flex: 1; }
 }

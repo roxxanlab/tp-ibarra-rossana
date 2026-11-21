@@ -5,8 +5,11 @@ const formulario = document.querySelector('#buscador');
 const campoNombre = document.querySelector('#nombre');
 const campoTipo = document.querySelector('#tipo');
 const boton = document.querySelector('#buscar');
+const botonLimpiar = document.querySelector('#limpiar');
 const mensaje = document.querySelector('#mensaje');
+const mensajeInicial = mensaje.textContent;
 const tarjetas = document.querySelector('#resultados');
+let solicitudActual = null;
 
 const mostrarMensaje = (texto, estado = '') => {
   mensaje.textContent = texto;
@@ -46,12 +49,12 @@ const crearTarjeta = (ubicacion) => {
   return tarjeta;
 };
 
-const pedirUbicaciones = async ({ nombre, tipo }) => {
+const pedirUbicaciones = async ({ nombre, tipo }, signal) => {
   const url = new URL(endpoint);
   if (nombre) url.searchParams.set('name', nombre);
   if (tipo) url.searchParams.set('type', tipo);
 
-  const respuesta = await fetch(url);
+  const respuesta = await fetch(url, { signal });
   if (respuesta.status === 404) return { total: 0, ubicaciones: [] };
   if (!respuesta.ok) throw new Error('La API respondió con un error');
 
@@ -93,12 +96,15 @@ const buscar = async () => {
   }
 
   guardarBusqueda(criterios);
+  const solicitud = new AbortController();
+  solicitudActual = solicitud;
   boton.disabled = true;
   tarjetas.replaceChildren();
   mostrarMensaje('Buscando…');
 
   try {
-    const { total, ubicaciones } = await pedirUbicaciones(criterios);
+    const { total, ubicaciones } = await pedirUbicaciones(criterios, solicitud.signal);
+    if (solicitudActual !== solicitud) return;
     if (!ubicaciones.length) {
       mostrarMensaje('Sin resultados. Prueba con otro nombre o tipo.');
       return;
@@ -109,15 +115,35 @@ const buscar = async () => {
       ? 'Se muestra 1 ubicación.'
       : `Se muestran ${ubicaciones.length} de ${total} ubicaciones.`);
   } catch {
-    mostrarMensaje('No se pudo completar la búsqueda. Revisa tu conexión e inténtalo de nuevo.', 'error');
+    if (solicitudActual === solicitud) {
+      mostrarMensaje('No se pudo completar la búsqueda. Revisa tu conexión e inténtalo de nuevo.', 'error');
+    }
   } finally {
-    boton.disabled = false;
+    if (solicitudActual === solicitud) {
+      solicitudActual = null;
+      boton.disabled = false;
+    }
   }
 };
 
 formulario.addEventListener('submit', (evento) => {
   evento.preventDefault();
   buscar();
+});
+
+botonLimpiar.addEventListener('click', () => {
+  solicitudActual?.abort();
+  solicitudActual = null;
+  boton.disabled = false;
+  formulario.reset();
+  tarjetas.replaceChildren();
+  mostrarMensaje(mensajeInicial);
+
+  try {
+    localStorage.removeItem(claveBusqueda);
+  } catch {
+    // El formulario se limpia aunque el navegador bloquee el almacenamiento.
+  }
 });
 
 const ultimaBusqueda = leerBusqueda();
