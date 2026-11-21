@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101d19">
+  <title>Atlas de ubicaciones | Rick and Morty</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="encabezado">
+      <div class="marca">
+        <span class="orbita" aria-hidden="true"></span>
+        <span>Rick and Morty</span>
+      </div>
+      <span class="variante">Variante B · Ubicaciones</span>
+    </div>
+    <div class="presentacion">
+      <h1>Atlas de ubicaciones</h1>
+      <p class="introduccion">Busca planetas, dimensiones y otros lugares del multiverso por nombre o tipo.</p>
+    </div>
+  </header>
+  <main>
+    <form id="buscador" aria-label="Buscar ubicaciones">
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input type="search" id="nombre" name="name" placeholder="Ej. Earth">
+      </div>
+      <div class="campo">
+        <label for="tipo">Tipo</label>
+        <input type="search" id="tipo" name="type" placeholder="Ej. Planet">
+      </div>
+      <button id="buscar" type="submit">Buscar</button>
+    </form>
+    <section aria-labelledby="titulo-resultados">
+      <h2 id="titulo-resultados">Resultados</h2>
+      <p id="mensaje" role="status">Ingresa un nombre o un tipo para empezar.</p>
+      <div id="resultados" class="tarjetas"></div>
+    </section>
+  </main>
+  <footer class="pie">Rossana Ibarra (@roxxanlab) · Fundamentos de Desarrollo Web - UCSA</footer>
+</body>
+</html>
