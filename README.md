@@ -9,6 +9,7 @@ Explorador de ubicaciones de Rick and Morty. Permite buscar planetas, dimensione
 ## Sitios publicados
 
 - GitHub Pages: https://roxxanlab.github.io/tp-ibarra-rossana/
+- Vercel: https://tp-ibarra-rossana.vercel.app/
 
 ## Captura
 
@@ -52,4 +53,4 @@ tp-ibarra-rossana/
 
 ## Despliegue
 
-GitHub Pages publica la raíz de la rama `main`. El sitio es estático y se actualiza automáticamente al recibir un `push` a esa rama. El número de versión en el pie permite comprobar qué versión se publicó.
+GitHub Pages y Vercel publican la raíz de la rama `main`. Vercel usa el preset Other y sirve los archivos estáticos sin un paso de compilación. Cada `push` a `main` actualiza ambas publicaciones automáticamente. El número de versión en el pie permite comprobar qué versión se publicó.
